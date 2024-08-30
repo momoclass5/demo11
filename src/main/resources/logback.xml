@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<Pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<!-- 패키지에 관련된 로그를 레벨이 맞게 출력-->
+
+	<logger name="com.icia.movieinfo" level="info" />
+	<!-- 테이블에 결과를 출력하기 위해서 info 대신 trace설정 -->
+	<!-- off는 출력 하지 않음 -->
+	<logger name="jdbc.connection" level="off" />
+	<!-- 실행한 sql 문장-->
+	<logger name="jdbc.sqlonly" level="info" />
+	<!-- 처리시간 -->
+	<logger name="jdbc.sqltiming" level="off" />
+	<!-- sql을 제외한 나머지 -->
+	<logger name="jdbc.audit" level="off" />
+
+	<!-- 결과집합 두개를 함께 써줘야 함 -->
+	<logger name="jdbc.resultset" level="info" />
+	<logger name="jdbc.resultsettable" level="info" />
+	<root level="info">
+		<appender-ref ref="console" />
+	</root>
+</configuration>
