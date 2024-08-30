@@ -26,7 +26,14 @@
                     -->
                     <if test = "searchWord != null and searchWord != ''">
                             <if test="searchField == 'regdate'">
-                            and to_char(${searchField},'yyyy-mm-dd') = #{searchWord}
+                            <!--
+                            비교연산자의 경우 
+                            xml태그로 해석되지 않고 텍스트로 처리하기 위해서 
+                            <![CDATA[ 문자열  ]]> 로 감싸 줍니다.
+                            -->
+                            <![CDATA[                                
+                            and to_char(${searchField},'yyyy-mm-dd') > #{searchWord}
+                            ]]>
                             </if>
                             <if test="searchField == 'title' or searchField == 'author'">
                             and ${searchField} = #{searchWord}
@@ -48,7 +55,9 @@
 
     <if test = "searchWord != null and searchWord != ''">
         <if test="searchField == 'regdate'">
-        and to_char(${searchField},'yyyy-mm-dd') = #{searchWord}
+        <![CDATA[  
+        and to_char(${searchField},'yyyy-mm-dd') > #{searchWord}
+        ]]>
         </if>
         <if test="searchField == 'title' or searchField == 'author'">
         and ${searchField} = #{searchWord}
