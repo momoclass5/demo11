@@ -10,4 +10,6 @@ import com.example.demo11.dto.SearchDto;
 @Mapper
 public interface BookMapper {
     List<BookDto> selectBookList(SearchDto search);
+
+    int selectTotalCnt();
 }

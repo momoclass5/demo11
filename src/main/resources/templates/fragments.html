@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="fm1">
+        <h1 th:text="${pageDto}">fragment</h1>
+    </div>
+
+    <div th:fragment="pageNavi" th:with="pageDto=${map.pageDto}">
+        <!--페이지네이션(페이지 블럭)-->
+      <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+          <!-- 앞으로가기 버튼 -->
+           <th:block th:if="${pageDto.prev}">
+            <li class="page-item disabled">
+                <a class="page-link">이전</a>
+            </li>
+            </th:block>
+
+          <!-- 페이지 번호 -->
+           <!-- #numbers.sequence(초기값, 종료값, 증감값) : 숫자 배열을 만들어주는 함수 
+                생성된 숫자 배열로 부터 하나씩 꺼내서 변수에 저장 하고 반복
+            -->
+           <th:block th:each="index:${#numbers.sequence(pageDto.startPage, pageDto.endPage)}">
+            
+            <li class="page-item"><a class="page-link" th:onclick="go([[${index}]])" th:text="${index}">1</a></li>
+
+           </th:block>
+          
+          <!-- 뒤로가기 버튼 -->
+          <th:block th:if="${pageDto.next}">
+          <li class="page-item">
+            <a class="page-link" href="#">다음</a>
+          </li>
+          </th:block>
+        </ul>
+      </nav>
+    </div>
+
+    <div th:fragment="header">
+        <!--네비게이션 바-->
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                <img src="/img/bootstrap-logo.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+                도서관리시스템
+                </a>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

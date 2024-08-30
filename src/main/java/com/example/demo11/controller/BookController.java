@@ -1,6 +1,8 @@
 package com.example.demo11.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,13 @@ public class BookController {
     public void getMethodName(Model model, SearchDto searchDto) {
         model.addAttribute("title", "도서목록");
         // 도서목록을 조회
-        List<BookDto> list = service.selectBookList(searchDto);
-        // 도서목록을 화면에 전달
-        model.addAttribute("list", list);
+        // List<BookDto> list = service.selectBookList(searchDto);
 
-        // 페이지블럭을 출력할 정보를 담고 있는 객체를 화면에 전달
-        model.addAttribute("pageDto", new PageDto());
+        Map<String, Object> map = service.selectBookList(searchDto);
+
+        // 도서목록을 화면에 전달
+        model.addAttribute("map", map);
+
     }
 
 }

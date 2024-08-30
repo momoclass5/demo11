@@ -20,9 +20,13 @@
         where rn between #{pageNo} * #{amount} - (#{amount}-1)
                     and #{pageNo} * #{amount}
     </select>
+    
+    <!-- selectTotalCnt --> 
+
+    <select id="selectTotalCnt">
+    select count(*) from tb_book
+    </select>
 
 
-
-
-
+    
 </mapper>
