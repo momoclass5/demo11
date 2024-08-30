@@ -27,6 +27,10 @@ public class PageDto {
     public PageDto(SearchDto searchDto, int totalCnt) {
         // 거의 고정
         int pageBlockAmount = 5;
+
+        // 화면에 페이지정보를 출력하기 위해 매개변수로 전달된 searchDto를 필드에 저장
+        this.searchDto = searchDto;
+
         endPage = (int) Math.ceil(searchDto.getPageNo() * 1.0 / pageBlockAmount) * pageBlockAmount;
         startPage = endPage - (pageBlockAmount - 1);
 

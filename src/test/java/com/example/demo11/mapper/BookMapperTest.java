@@ -20,8 +20,14 @@ public class BookMapperTest {
     @Test
     void testSelectBookList() {
         SearchDto dto = new SearchDto();
+
+        // 검색필드 설정
+        dto.setSearchField("1=1 or title");
+        // 검색어 설정
+        dto.setSearchWord("입력테스트");
+
         // 페이징과 검색처리를 위해 SearchDto를 매개변수로 넣어준다
         List<BookDto> list = mapper.selectBookList(dto);
-        assertEquals(dto.getAmount(), list.size());
+        assertEquals(1, list.size());
     }
 }

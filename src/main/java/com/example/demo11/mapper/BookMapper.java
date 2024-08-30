@@ -11,5 +11,6 @@ import com.example.demo11.dto.SearchDto;
 public interface BookMapper {
     List<BookDto> selectBookList(SearchDto search);
 
-    int selectTotalCnt();
+    // 검색 처리를 위해 파라메터를 추가
+    int selectTotalCnt(SearchDto search);
 }

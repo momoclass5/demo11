@@ -11,6 +11,10 @@
             width: 80%;
             margin: 0 auto;
         }
+        #searchBox{
+            width: 500px; 
+            margin: 0 auto;
+        }
     </style>
     <script>
         // searchForm을 이용해 페이지 요청 정보를 서버에 전달
@@ -40,15 +44,39 @@
     <h1 th:text="${title}">리스트</h1>
     <!-- <div th:text="${list}"></div> -->
     <form action="/book/list" method="get" name="searchForm">
-        
+      
+      map : <span th:text="${map.pageDto.searchDto.searchField == 'author'}"></span>
+      <!--param 으로 비교 할 경우, 문자열 처리를 하지 않으면 비교 결과가 제대로 나오지 않음-->
+      <br>param : <span th:text="${param.searchField == 'author'}"></span>
+      <br>param.toString() : <span th:text="${param.searchField.toString() == 'author'}"></span>
+      <div th:text="${param.searchField}"></div>
+      <div th:text="'author'"></div>
+      <div class="input-group" id="searchBox">
+
+        <!-- 검색필드 :-->
+        <!-- 검색필드 :-->
+        <select class="form-select" aria-label="Default select example" name="searchField">
+          <option value="title" selected>도서명</option>
+          <option value="author" th:selected = "${map.pageDto.searchDto.searchField == 'author'}">작가</option>
+          <option value="regdate" th:selected = "${map.pageDto.searchDto.searchField == 'regdate'}">등록일</option>
+        </select>
+        <!-- 검색어 -->
+        <input type="text" class="form-control" placeholder="검색어" name="searchWord"
+                  th:value="${param.searchWord}">
+        <!-- 검색 버튼 -->
+        <button class="form-control btn btn-outline-secondary" type="submit">검색</button>
+      </div>
         <!--
         param.pageNo 을 이용할 경우 문제점
         1. param을 이용해서 데이터를 가지고 오는 경우, 문자열로 반환이 되어지기 때문에 비교할때 형변환이 필요함
         2. 파라메터가 전달 되지 않은경우의 처리가 필요함
         그래서 param.pageNo 보다는 pageDto.searchDto.pageNo를 사용함
         -->
-        pageNo : <input type="text" name="pageNo" id="pageNo" value="1" th:value="${param.pageNo}">
-        <br>amount : <input type="text" name="amount" id="amount" value="10" th:value="${param.amount}">
+        pageNo : <input type="text" name="pageNo" id="pageNo" value="1" 
+                        th:value="${map.pageDto.searchDto.pageNo}">
+        <br>amount : <input type="text" name="amount" id="amount" value="10" 
+                        th:value="${map.pageDto.searchDto.amount}">
+        
         <br><button>전송</button>
     </form>
     <!--테이블-->
@@ -92,10 +120,7 @@
 
     </main>
 
-    <footer>
-        <hr>
-        copywriter
-    </footer>
+    <footer th:insert="~{/fragments::footer}"></footer>
     
     <!--부트스트랩 JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

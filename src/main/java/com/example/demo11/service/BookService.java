@@ -26,7 +26,7 @@ public class BookService {
         map.put("list", list);
 
         // 페이지 DTO
-        int totalCnt = mapper.selectTotalCnt();
+        int totalCnt = mapper.selectTotalCnt(searchDto);
         PageDto pageDto = new PageDto(searchDto, totalCnt);
         map.put("pageDto", pageDto);
 
