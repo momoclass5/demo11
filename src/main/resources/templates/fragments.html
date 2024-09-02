@@ -10,9 +10,11 @@
         <h1 th:text="${pageDto}">fragment</h1>
     </div>
 
-    <div th:fragment="pageNavi" th:with="pageDto=${map.pageDto}">
+    
+    <div th:fragment="pageNavi">
+      <th:block th:if="${map!=null}">
         <!--페이지네이션(페이지 블럭)-->
-      <nav aria-label="...">
+      <nav aria-label="..."  th:with="pageDto=${map.pageDto}">
         <ul class="pagination justify-content-center">
           <!-- 앞으로가기 버튼 -->
            <th:block th:if="${pageDto.prev}">
@@ -42,6 +44,11 @@
           </th:block>
         </ul>
       </nav>
+      </th:block>
+
+      <th:block th:unless="${map!=null}">
+        map is null
+      </th:block>
     </div>
 
     <div th:fragment="header">

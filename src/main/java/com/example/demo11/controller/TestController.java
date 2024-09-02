@@ -30,9 +30,14 @@ public class TestController {
 
             // 파일이 존재하면 파일을 읽어들여 브라우저에 전달
             if (file.exists()) {
+
                 // Mime 타입을 다운받을수 있는 타입으로 지정
-                headers.add("contentType", MediaType.APPLICATION_OCTET_STREAM.toString()); // 다운로드시 저장되는 이름을 지정 (한글이
-                                                                                           // 깨지는것을 막기위해 인코딩 처리가 필요합니다 )
+                if (false) {
+
+                } else {
+                    headers.add("contentType", MediaType.APPLICATION_OCTET_STREAM.toString()); // 다운로드시 저장되는 이름을 지정 (한글이
+                }
+                // 깨지는것을 막기위해 인코딩 처리가 필요합니다 )
                 // 컨텐츠에 대한 추가 설명 및 파일 이름
                 headers.add("Content-Disposition", "attachment; filename=\""
                         + new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");

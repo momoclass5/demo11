@@ -16,4 +16,6 @@ public interface MemberMapper {
      * @return List<MemberDto> : 사용자목록
      */
     public List<MemberDto> selectMemberList(SearchDto searchDto);
+
+    public int selectTotalCnt();
 }
