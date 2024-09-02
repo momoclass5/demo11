@@ -17,6 +17,7 @@
         }
     </style>
     <script>
+        // 페이지블럭의 페이지번호를 클릭하면 함수가 실행
         // searchForm을 이용해 페이지 요청 정보를 서버에 전달
         function go(pageNo){
             console.log(pageNo);
@@ -44,11 +45,12 @@
     <h1 th:text="${title}">리스트</h1>
     <!-- <div th:text="${list}"></div> -->
     <form action="/book/list" method="get" name="searchForm">
-      
+      <a href="/book/list">리스트페이지로 이동</a>
+
       map : <span th:text="${map.pageDto.searchDto.searchField == 'author'}"></span>
       <!--param 으로 비교 할 경우, 문자열 처리를 하지 않으면 비교 결과가 제대로 나오지 않음-->
       <br>param : <span th:text="${param.searchField == 'author'}"></span>
-      <br>param.toString() : <span th:text="${param.searchField.toString() == 'author'}"></span>
+      
       <div th:text="${param.searchField}"></div>
       <div th:text="'author'"></div>
       <div class="input-group" id="searchBox">
@@ -72,9 +74,11 @@
         2. 파라메터가 전달 되지 않은경우의 처리가 필요함
         그래서 param.pageNo 보다는 pageDto.searchDto.pageNo를 사용함
         -->
-        pageNo : <input type="text" name="pageNo" id="pageNo" value="1" 
+        pageNo : 
+        <input type="text" name="pageNo" id="pageNo" value="1" 
                         th:value="${map.pageDto.searchDto.pageNo}">
-        <br>amount : <input type="text" name="amount" id="amount" value="10" 
+        <br>amount : 
+        <input type="text" name="amount" id="amount" value="10" 
                         th:value="${map.pageDto.searchDto.amount}">
         
         <br><button>전송</button>

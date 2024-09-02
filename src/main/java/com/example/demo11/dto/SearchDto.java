@@ -16,7 +16,7 @@ public class SearchDto {
     private int amount = 10; // 한페이지에 게시물을 10건씩 조회 해서 화면에 출력
 
     // 검색 필드
-    private String searchField;
+    private String searchField = "";
     // 검색어
-    private String searchWord;
+    private String searchWord = "";
 }

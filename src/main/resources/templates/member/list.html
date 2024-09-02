@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 목록</title>
+</head>
+<body>
+    <!--
+    타임리프 문법 
+        외부에 정의해놓은 fragment를 불러 옵니다
+    
+        중복이 발생하는 코드를 정의 해놓고 불러서 사용
+    -->
+    <header th:insert="~{/fragments::header}"></header>
+    <!--
+        param.searchField.toString()
+        .toString() ~ 오류가 발생 하는 이유는
+        param.searchField 파라메터로 넘어온 searchField가 없기 때문
+    -->
+    <main>
+        <h3>사용자 목록</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">사용자 등록번호</th>
+                <th scope="col">아이디</th>
+                <th scope="col">이름</th>
+                <th scope="col">가입일</th>
+              </tr>
+            </thead>
+            <tbody>
+                
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              
+            </tbody>
+          </table>
+
+    </main>
+
+    <footer th:insert="~{/fragments::footer}"></footer>
+</body>
+</html>
