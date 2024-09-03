@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo11.service.UploadService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -71,6 +74,9 @@ public class UploadController {
         return "/upload";
     }
 
+    @Autowired
+    UploadService service;
+
     /**
      * multiple 옵션을 사용하여 여려개의 파일이 전달될 경우
      * 
@@ -84,11 +90,7 @@ public class UploadController {
             @RequestPart(name = "uploadFiles", required = false) List<MultipartFile> uploadFiles)
             throws IllegalStateException, IOException {
 
-        for (MultipartFile file : uploadFiles) {
-            log.info(file.getOriginalFilename());
-            File uploadFile = new File("d:/upload/" + file.getOriginalFilename());
-            file.transferTo(uploadFile);
-        }
+        service.insertUpload(uploadFiles, "multiple");
         return "/upload";
     }
 
