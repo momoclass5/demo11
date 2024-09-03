@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo11.mapper.UploadMapper">
+
+    <!-- insertUpload --> 
+
+    <insert id="insertUpload">
+        insert into tb_upload_file 
+        (f_no, idx, oname, sname, path, file_type)
+        values(seq_upload_file.nextval, #{idx}, #{oname}, #{sname}, #{path}, #{file_type})
+    </insert>
+</mapper>
