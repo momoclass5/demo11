@@ -12,5 +12,12 @@
         <input type="file" name="file" id="">
         <button>전송</button>
     </form>
+    <div th:text="${msg}"></div>
+    <hr>
+    <h2>파일업로드 - multiple</h2>
+    <form action="/uploadActionMultiple" method="post" enctype="multipart/form-data">
+        <input type="file" name="uploadFiles" id="" multiple>
+        <button>전송</button>
+    </form>
 </body>
 </html>

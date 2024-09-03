@@ -2,6 +2,7 @@ package com.example.demo11.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +24,14 @@ public class UploadController {
     }
 
     /**
-     * RequestPart어노테이션을 이용하여 전달된 파일을 저장
+     * 첨부파일 저장
      * 
-     * 사용자로부터 전달 받은 파일을 객체에 담아 서버에 저장
+     * RequestPart어노테이션을 이용하여 전달된 파일을
+     * MultipartFile 타입 변수에 저장
+     * 
+     * 전달된 파일이 있다면
+     * multiPartFile의 transferTo 메서드를 이용하여 서버에 파일을 저장
+     * 경로가 없는경우, 파일이 없는경우 예외가 발생 할수 있다
      * 
      * @param entity
      * @return
@@ -61,6 +67,27 @@ public class UploadController {
             // 전달된 파일이 없는경우
             log.info("파일 저장 실패 : IOException");
             e.printStackTrace();
+        }
+        return "/upload";
+    }
+
+    /**
+     * multiple 옵션을 사용하여 여려개의 파일이 전달될 경우
+     * 
+     * @param uploadFiles
+     * @return
+     * @throws IOException
+     * @throws IllegalStateException
+     */
+    @PostMapping("/uploadActionMultiple")
+    public String postMethodName(
+            @RequestPart(name = "uploadFiles", required = false) List<MultipartFile> uploadFiles)
+            throws IllegalStateException, IOException {
+
+        for (MultipartFile file : uploadFiles) {
+            log.info(file.getOriginalFilename());
+            File uploadFile = new File("d:/upload/" + file.getOriginalFilename());
+            file.transferTo(uploadFile);
         }
         return "/upload";
     }
