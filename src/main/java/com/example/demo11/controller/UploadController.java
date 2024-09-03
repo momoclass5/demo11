@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo11.dto.UploadDto;
 import com.example.demo11.service.UploadService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class UploadController {
     @GetMapping("/upload")
-    public void getMethodName() {
+    public void getMethodName(Model model) {
+        List<UploadDto> list = service.selectUploadList();
+        model.addAttribute("list", list);
     }
 
     /**

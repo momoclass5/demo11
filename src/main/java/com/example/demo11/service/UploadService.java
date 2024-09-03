@@ -31,22 +31,17 @@ public class UploadService {
         // 파일을 저장하고
         // 파일정보를 DB에 저장
         for (int i = 0; i < uploadFiles.size(); i++) {
-            // 리스트의 인덱스는 0부터 시작
+            // 리스트에 담긴 파일을 꺼내옴
             MultipartFile file = uploadFiles.get(i);
-            // for (MultipartFile file : uploadFiles) {
-            UploadDto uploadDto = new UploadDto();
-            // 파일의 소실을 막기위해 파일의 이름을 변경
-            uploadDto.setOname(file.getOriginalFilename());
-            uploadDto.setSnameValue(file.getOriginalFilename());
-            uploadDto.setPath(path);
-            uploadDto.setIdx(i + 1);
-            uploadDto.setFile_type(file.getContentType());
+            // Dto 객체에 세팅, 폴더생성 - 원본파일명, 저장할 파일명등 세팅
+            UploadDto uploadDto = makeUploadDto(file, path, i);
+            log.info(uploadDto.toString());
+
             try {
-                log.info(uploadDto.toString());
-                File uploadFile = new File("d:/upload/" + path + File.separator + file.getOriginalFilename());
-                // 파일저장 - 이름을 변경하지 않으면 중복 발생할수 있음
+                // 파일을 서버에 저장
+                File uploadFile = new File("d:/upload/" + path + File.separator + uploadDto.getSname());
                 file.transferTo(uploadFile);
-                // 파일정보를 DB 저장
+                // 파일정보를 DB 저장 + f_no반환
                 mapper.insertUpload(uploadDto);
             } catch (IllegalStateException e) {
                 // TODO Auto-generated catch block
@@ -55,10 +50,36 @@ public class UploadService {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
-            // MultipartFile의 파일정보를 바탕으로
-            // uploadDto를 세팅
-            mapper.insertUpload(uploadDto);
         }
+    }
+
+    // uploadDto 세팅
+    private UploadDto makeUploadDto(MultipartFile file, String path, int idx) {
+        UploadDto uploadDto = new UploadDto();
+        // 파일의 소실을 막기위해 파일의 이름을 변경
+        uploadDto.setOname(file.getOriginalFilename());
+        uploadDto.setSnameValue(file.getOriginalFilename());
+        uploadDto.setPath(path);
+        uploadDto.setIdx(idx + 1);
+        uploadDto.setFile_type(file.getContentType());
+
+        String dir = "d:/upload/" + path + File.separator;
+        // 디렉토리가 없으면 디렉토리 생성
+        makeDir(dir);
+
+        return uploadDto;
+    }
+
+    // 디렉토리가 존재 하지 않으면 디렉토리를 생성
+    private void makeDir(String dir) {
+        File uploadDir = new File(dir);
+        // 경로(폴더-디렉토리)가 존재하지 않으면 디렉토리를 생성
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+    }
+
+    public List<UploadDto> selectUploadList() {
+        return mapper.selectUploadList();
     }
 }

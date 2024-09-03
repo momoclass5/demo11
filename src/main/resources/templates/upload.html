@@ -19,5 +19,22 @@
         <input type="file" name="uploadFiles" id="" multiple>
         <button>전송</button>
     </form>
+
+    <hr>
+    <h3>파일 목록</h3>
+    <th:block th:if="${#lists.isEmpty(list)}">
+        파일목록 비어 있음
+    </th:block>
+    <th:block th:unless="${#lists.isEmpty(list)}">
+        파일목록 있음
+        <th:block th:each="upload:${list}">
+            <span th:text="${upload.f_no}"></span>
+            <span th:text="${upload.idx}"></span>
+            <span th:text="${upload.oname}"></span>
+            <span th:text="${upload.sname}"></span>
+            <span th:text="${upload.path}"></span>
+            <span th:text="${upload.regdate}"></span><br>
+        </th:block>
+    </th:block>
 </body>
 </html>

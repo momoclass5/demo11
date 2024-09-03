@@ -12,4 +12,19 @@
         (f_no, idx, oname, sname, path, file_type)
         values(seq_upload_file.nextval, #{idx}, #{oname}, #{sname}, #{path}, #{file_type})
     </insert>
+
+    <!-- selectUploadList --> 
+
+    <select id="selectUploadList">
+        select * from tb_upload_file order by f_no desc
+    </select>
+    
+
+    <!-- selectUpload --> 
+
+    <select id="selectUpload">
+    select * from tb_upload_file where f_no = #{f_no}
+    </select>    
+
+
 </mapper>

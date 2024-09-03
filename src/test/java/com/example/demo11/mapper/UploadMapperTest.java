@@ -58,7 +58,7 @@ public class UploadMapperTest {
     public static void main(String[] args) {
         System.out.println(value);
         System.out.println("===================");
-        File uploadFile = new File("d:/upload/book");
+        File uploadFile = new File("d:/upload/test/a.txt");
         // 파일객체.exists() : 해당 경로, 해당경로의 파일이 존재하는지 확인하는 메서드
         if (!uploadFile.exists()) {
             // 폴더가 존재하지 않는경우 폴더를 생성 합니다.
