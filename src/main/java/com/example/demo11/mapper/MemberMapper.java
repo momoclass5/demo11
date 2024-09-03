@@ -17,5 +17,5 @@ public interface MemberMapper {
      */
     public List<MemberDto> selectMemberList(SearchDto searchDto);
 
-    public int selectTotalCnt();
+    public int selectTotalCnt(SearchDto searchDto);
 }

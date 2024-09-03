@@ -14,6 +14,16 @@
                 from    (
                         select  * 
                         from    tb_member
+                        where   1=1
+                        <!-- 동적쿼리 : 사용자의 요청에 의해서 변경되는 쿼리 -->
+                        <if test="searchWord !=''">
+                            <if test="searchField == 'regdate'">
+                                and to_char(regdate, 'yyyy-mm-dd') = #{searchWord}
+                            </if>
+                            <if test="searchField != 'regdate'">
+                                and upper(${searchField}) like '%'||upper(#{searchWord})||'%'
+                            </if>
+                        </if>
                         order by m_no desc
                 )t
         )
@@ -24,7 +34,19 @@
     <!-- selectTotalCnt --> 
 
     <select id="selectTotalCnt">
-        select count(*) from tb_member
+        select  count(*) 
+        from    tb_member
+        where   1=1
+        <!-- 동적쿼리 : 사용자의 요청에 의해서 변경되는 쿼리 -->
+        <if test="searchWord !=''">
+            <if test="searchField == 'regdate'">
+                and to_char(regdate, 'yyyy-mm-dd') = #{searchWord}
+            </if>
+            <if test="searchField != 'regdate'">
+            <!-- like 사용시 %를 문자열 처리후 연결하여 사용 할 수 있다 -->
+            and upper(${searchField}) like '%'||upper(#{searchWord})||'%'
+            </if>
+        </if>
     </select>
     
 </mapper>

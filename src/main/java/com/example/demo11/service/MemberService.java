@@ -27,7 +27,8 @@ public class MemberService {
         List<MemberDto> list = mapper.selectMemberList(searchDto);
         map.put("list", list);
 
-        int totalCnt = mapper.selectTotalCnt();
+        // 검색조건을 추가
+        int totalCnt = mapper.selectTotalCnt(searchDto);
         PageDto pageDto = new PageDto(searchDto, totalCnt);
         map.put("pageDto", pageDto);
         return map;

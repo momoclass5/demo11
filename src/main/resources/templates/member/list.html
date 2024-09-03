@@ -21,6 +21,32 @@
     -->
     <main th:with="list=${map.list}">
         <h3>사용자 목록</h3>
+
+        <!-- SearchForm : 검색조건및 페이징 정보를 담은 폼-->
+        <Form action="/member/list" method="get" name="searchForm">
+            <hr>
+            <!-- input-group : select, text, button을 한줄에 나오도록 처리-->
+            <div class="input-group" style="width:500px;margin:0 auto;">
+            <!-- 검색필드 :-->
+            <select class="form-select" aria-label="Default select example" name="searchField">
+                <option value="name" selected>이름</option>
+                <!-- selected = true이면 selected가 적용됨 -->
+                <option value="id" th:selected = "${map.pageDto.searchDto.searchField == 'id'}">아이디</option>
+                <option value="regdate" th:selected = "${map.pageDto.searchDto.searchField == 'regdate'}">가입일</option>
+            </select>
+            <!-- 검색어 -->
+            <input type="text" class="form-control" placeholder="검색어" name="searchWord"
+                        th:value="${param.searchWord}">
+            <!-- 검색 버튼 -->
+            <button class="form-control btn btn-outline-secondary" type="submit">검색</button>
+            </div>
+            <hr>
+            
+            <input type="hidden" id="pageNo" name="pageNo" th:value="${map.pageDto.searchDto.pageNo}">
+            <input type="hidden" id="amount" name="amount" th:value="${map.pageDto.searchDto.amount}">
+            
+        </Form>
+
         <table class="table">
             <thead>
               <tr>
