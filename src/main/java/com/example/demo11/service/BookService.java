@@ -38,4 +38,8 @@ public class BookService {
 
     }
 
+    public BookDto selectBook(String b_no) {
+        return mapper.selectBook(b_no);
+    }
+
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo11.dto.BookDto;
 import com.example.demo11.dto.SearchDto;
+import com.example.demo11.dto.UploadDto;
 import com.example.demo11.service.BookService;
 import com.example.demo11.service.UploadService;
 
@@ -82,6 +83,17 @@ public class BookController {
             return "/msgbox";
         }
         // return "redirect:/book/list";
+    }
+
+    @GetMapping("/book/detail")
+    public void getMethodName(BookDto book, Model model) {
+        // 도서 상세정보 조회
+        book = service.selectBook(book.getB_no());
+        model.addAttribute("book", book);
+
+        // 도서에 포함된 파일목록을 조회하고 저장
+        List<UploadDto> imgFileList = uploadService.selectUploadList(book.getImg_f_no());
+        model.addAttribute("imgFileList", imgFileList);
     }
 
 }

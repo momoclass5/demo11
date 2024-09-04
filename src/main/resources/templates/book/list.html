@@ -128,7 +128,14 @@
             <th:block th:each="book:${list}">
                 <tr>
                     <th scope="row" th:text="${book.b_no}"></th>
-                    <td th:text="${book.title}"></td>
+                    <td>
+                      <a th:href="@{/book/detail(b_no=${book.b_no})}" th:text="${book.title}"></a>
+                      <!-- 링크를 이용해서 /book/detail?b_no=123 
+                       컨트롤러 /book/detail -->
+                       <th:block th:unless="${isNew}">
+                        <i class="bi bi-balloon"></i>
+                       </th:block>
+                    </td>
                     <td th:text="${book.author}"></td>
                     <td th:text="${book.regdate}"></td>
                 </tr>

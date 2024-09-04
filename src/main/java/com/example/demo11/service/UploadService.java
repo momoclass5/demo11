@@ -93,4 +93,8 @@ public class UploadService {
     public List<UploadDto> selectUploadList() {
         return mapper.selectUploadList();
     }
+
+    public List<UploadDto> selectUploadList(int f_no) {
+        return mapper.selectUpload(f_no);
+    }
 }

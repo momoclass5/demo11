@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,7 @@ import com.example.demo11.service.UploadService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import java.net.*;
 
 @Controller
 @Slf4j
@@ -122,9 +122,9 @@ public class UploadController {
             if (file.exists()) {
 
                 // Mime 타입을 다운받을수 있는 타입으로 지정
-                // String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-                // if (mimeType == null)
-                String mimeType = MediaType.APPLICATION_OCTET_STREAM.toString();
+                String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+                if (mimeType == null)
+                    mimeType = MediaType.APPLICATION_OCTET_STREAM.toString();
                 // Content-Type, MediaType
                 // 파일 또는 바이트 집합의 성격과 형식을 나타내는 값
                 // MediaType 객체에 정의 되어 있음

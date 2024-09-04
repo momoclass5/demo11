@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <!--
+    타임리프 문법 
+        외부에 정의해놓은 fragment를 불러 옵니다
+    
+        중복이 발생하는 코드를 정의 해놓고 불러서 사용
+    -->
+    <header th:insert="~{/fragments::header}"></header>
+    
+    <main>
+        <h3>도서상세</h3>
+        
+        <th:block th:if="${book != null}">
+            <table>
+                <tr>
+                    <!--첨부파일 이미지-->
+                    <td rowspan="4">
+                    <th:block th:unless="${#lists.isEmpty(imgFileList)}">
+                        <!-- <div th:text="${imgFileList[0]}"></div> -->
+                        <img th:src="@{/download(fileName='/'+${imgFileList[0].path}+'/'+${imgFileList[0].sname}, oname=${imgFileList[0].oname})}" 
+                            alt="첨부파일" width="200px" height="200px"><br>
+                    </th:block>
+                    </td>
+                    <td>도서명</td>
+                    <td th:text="${book.title}"></td>
+            </tr>
+            <tr>
+                <td>작가</td>
+                <td th:text="${book.author}"></td>
+            </tr>
+            <tr>
+                <td>가격</td>
+                <td th:text="${book.price}"></td>
+            </tr>
+            <tr>
+                <td>등록일</td>
+                <td th:text="${book.regdate}"></td>
+            </tr>
+        </table>
+        </th:block>
+
+
+    </main>
+
+    <footer th:insert="~{/fragments::footer}"></footer>
+</body>
+</html>
