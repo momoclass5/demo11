@@ -26,15 +26,21 @@ public class UploadService {
      * 
      * @param uploadFiles
      */
-    public void insertUpload(List<MultipartFile> uploadFiles, String path) {
+    public int insertUpload(List<MultipartFile> uploadFiles, String path) {
+
+        // 파일의 정보를 db에 저장 하기 위해서 시퀀스 값을 조회
+        int f_no = mapper.selectSeqUploadFile();
+        // uploadFiles에 전달된 파일을 서버에 저장하고 DB에 입력후 f_no를 반환
+
         // 서버로 전달된 파일 리스트를 돌면서
         // 파일을 저장하고
         // 파일정보를 DB에 저장
+        // ===================================================================
         for (int i = 0; i < uploadFiles.size(); i++) {
             // 리스트에 담긴 파일을 꺼내옴
             MultipartFile file = uploadFiles.get(i);
             // Dto 객체에 세팅, 폴더생성 - 원본파일명, 저장할 파일명등 세팅
-            UploadDto uploadDto = makeUploadDto(file, path, i);
+            UploadDto uploadDto = makeUploadDto(file, path, i, f_no);
             log.info(uploadDto.toString());
 
             try {
@@ -51,10 +57,13 @@ public class UploadService {
                 e.printStackTrace();
             }
         }
+
+        return f_no;
+        // ===================================================================
     }
 
     // uploadDto 세팅
-    private UploadDto makeUploadDto(MultipartFile file, String path, int idx) {
+    private UploadDto makeUploadDto(MultipartFile file, String path, int idx, int f_no) {
         UploadDto uploadDto = new UploadDto();
         // 파일의 소실을 막기위해 파일의 이름을 변경
         uploadDto.setOname(file.getOriginalFilename());
@@ -62,6 +71,8 @@ public class UploadService {
         uploadDto.setPath(path);
         uploadDto.setIdx(idx + 1);
         uploadDto.setFile_type(file.getContentType());
+        // 조회된 시퀀스값을 입력하여 파일을 묶어준다
+        uploadDto.setF_no(f_no);
 
         String dir = "d:/upload/" + path + File.separator;
         // 디렉토리가 없으면 디렉토리 생성

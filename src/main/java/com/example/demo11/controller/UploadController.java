@@ -2,11 +2,18 @@ package com.example.demo11.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -18,7 +25,6 @@ import com.example.demo11.service.UploadService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @Slf4j
@@ -74,7 +80,7 @@ public class UploadController {
             log.info("파일 저장 실패 : IOException");
             e.printStackTrace();
         }
-        return "/upload";
+        return "redirect:/upload";
     }
 
     @Autowired
@@ -94,7 +100,76 @@ public class UploadController {
             throws IllegalStateException, IOException {
 
         service.insertUpload(uploadFiles, "multiple");
-        return "/upload";
+        return "redirect:/upload";
+    }
+
+    // /download?fileName=/multiple/bootstrap-logo (1).svg&oname=테스트.svg
+    // sname, oname
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> getMethodName(@RequestParam(name = "fileName") String fileName,
+            @RequestParam(name = "oname") String oname) throws IOException {
+        // fileName = /path/ + sname
+        // oname = oname
+        log.info("download file : " + fileName);
+
+        File file = new File("d:\\upload\\" + fileName);
+
+        try {
+            // 응답헤더 설정 (파일의 타입및 암호화된패턴등은 헤더에 지정)
+            HttpHeaders headers = new HttpHeaders();
+
+            // 파일이 존재하면 파일을 읽어들여 브라우저에 전달
+            if (file.exists()) {
+
+                // Mime 타입을 다운받을수 있는 타입으로 지정
+                // String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+                // if (mimeType == null)
+                String mimeType = MediaType.APPLICATION_OCTET_STREAM.toString();
+                // Content-Type, MediaType
+                // 파일 또는 바이트 집합의 성격과 형식을 나타내는 값
+                // MediaType 객체에 정의 되어 있음
+                // 웹브라우저는 mediaType(Content-Type)을 확인하고 전달받은 문서의 종류를 인식
+                headers.add("Content-Type", mimeType); // 다운로드시 저장되는 이름을 지정 (한글이
+                // 깨지는것을 막기위해 인코딩 처리가 필요합니다 )
+                // 컨텐츠에 대한 추가 설명 및 파일 이름
+                headers.add("Content-Disposition", "attachment; filename=\""
+                        + new String(oname.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+
+                // ResponseEntity<>(본문데이터(body), 응답헤더객체, Http상태코드)
+                return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+            } else {
+                // 파일이 없는경우 상태코드 404 전달
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            // 오류 발생시 상태코드 500 전달
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+    }
+
+    /*
+     * ResponseEntity
+     * HTTP응답을 처리할때 사용되는 객체
+     * 
+     * 상태코드 : HttpStatus에 정의된 상태코드
+     * 헤더정보 : 응답헤더 - HttpHeaders를 생성하여 속성을 추가
+     * 본문 : body영역 - 실제 데이터 또는 본문 메세지
+     * 
+     */
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+
+        // return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        // return new ResponseEntity<>("responseEntity", HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK) // 상태코드
+                .headers(new HttpHeaders()) // 응답헤더
+                .body("body"); // 본문(바디)
+
     }
 
 }

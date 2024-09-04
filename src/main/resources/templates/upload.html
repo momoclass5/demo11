@@ -30,11 +30,21 @@
         <th:block th:each="upload:${list}">
             <span th:text="${upload.f_no}"></span>
             <span th:text="${upload.idx}"></span>
-            <span th:text="${upload.oname}"></span>
-            <span th:text="${upload.sname}"></span>
-            <span th:text="${upload.path}"></span>
+            <a th:text="${upload.oname}" 
+                th:href="@{/download(fileName='/'+${upload.path} + '/' + ${upload.sname}, oname=${upload.oname})}"></a>
+            
             <span th:text="${upload.regdate}"></span><br>
         </th:block>
     </th:block>
+    
+    <!--
+    /download : 서버에 있는 파일을 다운로드 
+    uploadDto객체의 필드값을 이용해서 fileName과 oname을 전달
+    fileName : /path/sname (path경로를 포함하는 경로)
+    oname : oname 
+    -->
+    <a th:href="@{/download?fileName=/multiple/bootstrap-logo%20(1).svg&oname=%ED%85%8C%EC%8A%A4%ED%8A%B8.svg}">파일다운로드</a>
+    <a th:href="@{/download?fileName=/multiple/bootstrap-logo (1).svg&oname=테스트.svg}">파일다운로드</a>
+
 </body>
 </html>

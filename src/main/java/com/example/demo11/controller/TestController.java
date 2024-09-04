@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestController {
 
-    @GetMapping("/download")
+    @GetMapping("/download11")
     // ResponseEntity : HTTP응답객체
     public ResponseEntity<byte[]> getMethodName(@RequestParam(name = "fileName") String fileName,
             @RequestParam(name = "img", required = false) String img) throws IOException {
@@ -63,7 +63,7 @@ public class TestController {
 
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test11")
     public ResponseEntity<String> getMethodName1() {
         ResponseEntity.status(HttpStatus.CREATED) // 상태 코드 설정
                 .headers(new HttpHeaders()) // 헤더 설정

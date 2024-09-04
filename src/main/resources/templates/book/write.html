@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--
+    타임리프 문법 
+        외부에 정의해놓은 fragment를 불러 옵니다
+    
+        중복이 발생하는 코드를 정의 해놓고 불러서 사용
+    -->
+    <header th:insert="~{/fragments::header}"></header>
+    
+    <main>
+        <h3>도서등록</h3>
+        <!-- 파일을 전달 하기 위해 enctype을 지정 -->
+        <form action="/book/writeAction" method="post" enctype="multipart/form-data">
+        <table class="table">
+            <tbody>
+              <tr>
+                <th scope="row">도서명</th>
+                <td><input type="text" name="title" id="title"></td>
+              </tr>
+              <tr>
+                <th scope="row">작가</th>
+                <td><input type="text" name="author" id="author"></td>
+              </tr>
+              <tr>
+                <th scope="row">가격</th>
+                <td colspan="2"><input type="text" name="price" id="price"></td>
+              </tr>
+              <tr>
+                <th scope="row">이미지</th>
+                <td colspan="2"><input type="file" name="file" id="file" multiple></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="reset" class="btn btn-secondary">초기화</button>
+                <button type="button" class="btn btn-success" onclick="location.href='/book/list'">리스트</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </form>
+    </main>
+
+    <footer th:insert="~{/fragments::footer}"></footer>
+</body>
+</html>

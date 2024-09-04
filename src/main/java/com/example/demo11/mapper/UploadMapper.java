@@ -15,4 +15,6 @@ public interface UploadMapper {
 
     // f_no에 해당하는 정보를 조회
     public List<UploadDto> selectUpload(String f_no);
+
+    public int selectSeqUploadFile();
 }
