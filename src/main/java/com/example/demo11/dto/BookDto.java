@@ -12,4 +12,6 @@ public class BookDto {
     private String delyn;
     private String regdate;
     private String r_no;
+    // 메인 이미지 파일 번호
+    private int img_f_no;
 }

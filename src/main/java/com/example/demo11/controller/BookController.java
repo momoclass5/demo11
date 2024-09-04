@@ -69,11 +69,18 @@ public class BookController {
         System.out.println(files);
 
         if (files != null && files.size() > 0) {
-            // 파일테이블의 시퀀스값
+            // 파일을 저장하고 시퀀스값을 반환 받아온다!
+            // path : 서비스별로 첨부파일을 관리하기 위해 폴더를 구분!!!!
             int f_no = uploadService.insertUpload(files, "book");
+            book.setImg_f_no(f_no);
         }
 
-        return "/book/write";
+        int res = service.insertBook(book);
+        if (res > 0) {
+            return "redirect:/book/list";
+        } else {
+            return "/msgbox";
+        }
         // return "redirect:/book/list";
     }
 

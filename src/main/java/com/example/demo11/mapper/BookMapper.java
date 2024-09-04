@@ -13,4 +13,6 @@ public interface BookMapper {
 
     // 검색 처리를 위해 파라메터를 추가
     int selectTotalCnt(SearchDto search);
+
+    int insertBook(BookDto book);
 }

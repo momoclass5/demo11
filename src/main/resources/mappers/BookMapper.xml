@@ -67,5 +67,11 @@
     </select>
 
 
-    
+
+    <!-- insertBook --> 
+
+    <insert id="insertBook">
+        insert into tb_book (b_no, title, author, price, img_f_no)
+                values (seq_tb_book.nextval, #{title}, #{author}, #{price}, #{img_f_no})
+    </insert>    
 </mapper>
