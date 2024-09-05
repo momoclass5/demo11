@@ -29,6 +29,11 @@ public class BookController {
     @Autowired
     BookService service;
 
+    @GetMapping("/")
+    public String getMethodName1() {
+        return "forward:/book/list";
+    }
+
     @GetMapping("/book/list")
     public void getMethodName(Model model, SearchDto searchDto) {
         // 파라메터 수집이 잘 되는지 확인!
