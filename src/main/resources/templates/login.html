@@ -59,7 +59,10 @@
                                     <form class="user" method="post" action="/member/loginAction"
                                             name="form_login">
                                         <div th:text="${msg}" class="msgbox"></div>
+                                        <div th:text="${param.msg}" class="msgbox"></div>
+
                                         <div class="form-group">
+
                                             <!--
                                             
                                             ? name속성값 = value속성값 & ....

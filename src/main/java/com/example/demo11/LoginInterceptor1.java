@@ -1,5 +1,6 @@
 package com.example.demo11;
 
+import java.net.*;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,11 +34,14 @@ public class LoginInterceptor1 implements HandlerInterceptor {
         if (session.getAttribute("loginId") == null
                 || "".equals((String) session.getAttribute("loginId"))) {
 
+            // 한글로된 파라메터를 전달하기 위해서 urlEncoder를 사용
+            // 쿼리스트링으로 전달 되므로 화면에서 출력하기 위해서는 param.msg를 이용!
+            String msg = URLEncoder.encode("로그인후 이용이 가능 합니다.", "utf-8");
             // 서블릿을 통해서 리다이렉트
             // 로그인을 하지 않은 경우 로그인 페이지로 이동
-            response.sendRedirect("/member/login");
+            response.sendRedirect("/member/login?msg=" + msg);
             // Model.setAttribute랑 동일
-            request.setAttribute("msg", "로그인후 이용이 가능 합니다.");
+            // request.setAttribute("msg", "로그인후 이용이 가능 합니다.");
 
             // controller로 요청을 보내지 않음
             return false;
