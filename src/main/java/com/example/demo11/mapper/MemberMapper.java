@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.demo11.dto.MemberDto;
-import com.example.demo11.dto.SelectDto;
+import com.example.demo11.dto.SearchDto;
 
 @Mapper
 public interface MemberMapper {
@@ -19,7 +19,7 @@ public interface MemberMapper {
 
     int updatePw(MemberDto member);
 
-    List<MemberDto> selectMemberList(SelectDto selectDto);
+    List<MemberDto> selectMemberList(SearchDto searchDto);
 
     int selectTotalCnt();
 

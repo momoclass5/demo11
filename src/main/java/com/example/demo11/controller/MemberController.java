@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo11.dto.MemberDto;
 import com.example.demo11.dto.PageDto;
-import com.example.demo11.dto.SelectDto;
+import com.example.demo11.dto.SearchDto;
 import com.example.demo11.service.MemberService;
 
 import jakarta.servlet.http.Cookie;
@@ -168,11 +168,11 @@ public class MemberController {
     }
 
     @GetMapping("/list")
-    public String selectList(Model model, SelectDto selectDto) {
-        log.info("selectDto : " + selectDto);
+    public String selectList(Model model, SearchDto searchDto) {
+        log.info("searchDto : " + searchDto);
 
         // 데이터베이스에서 사용자 목록을 조회
-        Map<String, Object> map = service.selectMemberList(selectDto);
+        Map<String, Object> map = service.selectMemberList(searchDto);
         model.addAttribute("map", map);
 
         return "/member/list";

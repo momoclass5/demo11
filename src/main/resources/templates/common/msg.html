@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 
+        서버로부터 데이터를 전달 받아서 메세지를 출력하고 화면을 이동 시킵니다.
+        msg : 알림창을 통해 메세지를 띄움
+                만약, msg가 null이라면 
+        url : 메세지창의 확인버튼을 클릭시 url로 이동
+                만약, url이 null이라면 뒤로가기
+    
+    -->
+    <script th:inline="javascript">
+        let msg = [[${msg}]];
+        if(msg != null){
+            // 메세지창 띄우기
+            alert(msg);
+
+            let url=[[${url}]];
+            // url이 있다면 url페이지로 없으면 뒤로가기
+            if(url != null){
+                location.href=url;
+            } else {
+                // 뒤로가기
+                history.back();
+            }
+        } else {
+            // 뒤로가기
+            history.back();
+        }
+    </script>
+</head>
+<body>
+    <p th:text="${msg}"></p>
+</body>
+</html>
