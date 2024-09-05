@@ -28,7 +28,7 @@ public class LoginInterceptor1 implements HandlerInterceptor {
             throws Exception {
 
         HttpSession session = request.getSession();
-
+        System.out.println(session.getAttribute("loginId"));
         // 로그인했는지 확인
         // null이 아니고 빈문자열이 아니면 로그인 했다고 판단
         if (session.getAttribute("loginId") == null
@@ -46,6 +46,7 @@ public class LoginInterceptor1 implements HandlerInterceptor {
             // controller로 요청을 보내지 않음
             return false;
         }
+
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 

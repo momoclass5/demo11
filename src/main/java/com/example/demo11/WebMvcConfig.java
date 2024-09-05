@@ -19,7 +19,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
                 // 로그인 페이지가 제외할 패턴으로 등록되어 있지 않은경우
                 // 로그인페이지로 계속 리다이렉트 요청이 일어난다
-                .excludePathPatterns("/book/list", "/member/login", "/member/register"); // 제외할 패턴
+                // 로그인이 /member/ 하위 적용된 경우 로그인처리에 사용되는 경로를 제외 해야 한다!!!!!
+                .excludePathPatterns("/book/list", "/member/login", "/member/register", "/member/loginAction"); // 제외할
+                                                                                                                // 패턴
 
         // TODO Auto-generated method stub
         // WebMvcConfigurer.super.addInterceptors(registry);
