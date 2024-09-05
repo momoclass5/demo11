@@ -1,5 +1,22 @@
-Fellow Jitster
-Fellow Jitster says:-- 업로드 파일 테이블 생성
+-- 사용자 시퀀스 생성
+create sequence SEQ_TB_MEMBER;
+
+-- 사용자 테이블 생성
+CREATE TABLE "TB_MEMBER" 
+   (	"M_NO" CHAR(6 BYTE), 
+	"ID" VARCHAR2(20 BYTE), 
+	"PW" VARCHAR2(100 BYTE) NOT NULL ENABLE, 
+	"NAME" VARCHAR2(20 BYTE) NOT NULL ENABLE, 
+	"GENDER" CHAR(1 BYTE), 
+	"ADDR" VARCHAR2(100 BYTE), 
+	"PHONE" VARCHAR2(20 BYTE), 
+	"DELYN" CHAR(1 BYTE) DEFAULT ('N'), 
+	"REGDATE" DATE DEFAULT SYSDATE, 
+	 CHECK (GENDER IN ('F', 'M')) ENABLE, 
+	 CHECK (DELYN IN ('Y','N')) ENABLE, 
+	 PRIMARY KEY ("M_NO")
+   );
+
 create table tb_upload_file(
     f_no    number -- 기본키
     ,idx    number -- 기본키
@@ -17,12 +34,19 @@ create sequence seq_upload_file;
 -- 업로드 파일테이블 데이터 입력
 insert into tb_upload_file 
         (f_no, idx, oname, sname, path, file_type)
-        values(1,1,'oname','sname', 'd😕upload', 'img'); 
-Fellow Jitster says:alter table tb_book add f_no number;
+        values(1,1,'oname','sname', 'path', 'img'); 
+
+-- 도서테이블에 첨부파일의 파일번호 컬럼을 추가
+alter table tb_book add f_no number;
+
 select * from tb_book;
+
+-- 첨부파일 번호를 업데이트
 update tb_book
 set f_no=1
 where b_no='B00111'; 
-Fellow Jitster says:select *
+
+-- 첨부파일 목록을 조회
+select *
 from tb_book b, tb_upload_file f
 where b.f_no = f.f_no(+); 
