@@ -4,81 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 목록</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        main{
+            /* border: 1px solid black; */
+            /* width: 80%;
+            margin: 0 auto; */
+            /* 테두리 안쪽 여백 */
+            /* padding-left: 30px;
+            padding-right: 30px; */
+            /* 테두리 바깥쪽 여백 */
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+    </style>
+    <script>
+        // 페이지번호를 파라메터로 받아서 요청
+        function go(pageNo){
+            // 페이지번호 설정
+            searchForm.pageNo.value=pageNo;
+            // 폼 전송
+            searchForm.submit();
+        }
+    </script>
 </head>
 <body>
 
-    <!--
-    타임리프 문법 
-        외부에 정의해놓은 fragment를 불러 옵니다
-    
-        중복이 발생하는 코드를 정의 해놓고 불러서 사용
-    -->
-    <header th:insert="~{/fragments::header}"></header>
-    <!--
-        param.searchField.toString()
-        .toString() ~ 오류가 발생 하는 이유는
-        param.searchField 파라메터로 넘어온 searchField가 없기 때문
-    -->
-    <main th:with="list=${map.list}">
-        <h3>사용자 목록</h3>
+    <div>
+        <header>
+            <!--네비게이션바-->
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                <a class="navbar-brand" href="#">도서관</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">도서목록</a>
+                    <a class="nav-link" href="#">회원목록</a>
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                    </div>
+                </div>
+                </div>
+            </nav>
+        </header>
+        <!-- th:width 변수를 선언하여 값을 대입-->
+        <main th:with="list=${map.list}, pageDto=${map.pageDto}">
+            <!--타이틀-->
+            <p><h2>회원목록</h2></p>
 
-        <!-- SearchForm : 검색조건및 페이징 정보를 담은 폼-->
-        <Form action="/member/list" method="get" name="searchForm">
-            <hr>
-            <!-- input-group : select, text, button을 한줄에 나오도록 처리-->
-            <div class="input-group" style="width:500px;margin:0 auto;">
-            <!-- 검색필드 :-->
-            <select class="form-select" aria-label="Default select example" name="searchField">
-                <option value="name" selected>이름</option>
-                <!-- selected = true이면 selected가 적용됨 -->
-                <option value="id" th:selected = "${map.pageDto.searchDto.searchField == 'id'}">아이디</option>
-                <option value="regdate" th:selected = "${map.pageDto.searchDto.searchField == 'regdate'}">가입일</option>
-            </select>
-            <!-- 검색어 -->
-            <input type="text" class="form-control" placeholder="검색어" name="searchWord"
-                        th:value="${param.searchWord}">
-            <!-- 검색 버튼 -->
-            <button class="form-control btn btn-outline-secondary" type="submit">검색</button>
-            </div>
-            <hr>
-            
-            <input type="hidden" id="pageNo" name="pageNo" th:value="${map.pageDto.searchDto.pageNo}">
-            <input type="hidden" id="amount" name="amount" th:value="${map.pageDto.searchDto.amount}">
-            
-        </Form>
-
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">사용자 등록번호</th>
-                <th scope="col">아이디</th>
-                <th scope="col">이름</th>
-                <th scope="col">가입일</th>
-              </tr>
-            </thead>
-            <tbody>
-
+            <!--검색-->
+            <form name="searchForm" action="/member/list" method="get">
+                <hr>
+                <!-- model에 저장하는경우에 : 이름 -->
+                <!-- 파라메터로 전달 한 경우(쿼리스트링) : param.이름 -->
+                <!-- 파라메터가 비어 있는 경우 기본값을 주는 방법 : ?:-->
+                pageNo: <input type="text" name="pageNo" value="1" id="pageNo" th:value="${param.pageNo?:'1'}">
+                amount: <input type="text" name="amount" value="10" id="amount" th:value="${param.amount?:'10'}">
+                <!--selectbox로 수정-->
+                <br>searchField: <input type="text" name="searchField" value="1" id="searchField">
+                searchWord: <input type="text" name="searchWord" value="10" id="searchWord">
+                <br><button>조회</button>
+                <hr>
+            </form>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">사번</th>
+                    <th scope="col">아이디</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">가입일</th>
+                </tr>
+                </thead>
+                <tbody>
+                
+                <!--게시물의 갯수만큼 반복-->
+                <!--타임리프의 if else 문장-->
                 <th:block th:if="${#lists.isEmpty(list)}">
-                    <tr>
-                        <td colspan="4">등록된 사용자가 없습니다.</td>
-                    </tr>
+                    <tr><td colspan="4">사용자가 없습니다.</td></tr>
                 </th:block>
                 <th:block th:unless="${#lists.isEmpty(list)}">
                     <th:block th:each="member:${list}">
-                    <tr>
-                      <th scope="row" th:text="${member.m_no}">1</th>
-                      <td th:text="${member.id}">Mark</td>
-                      <td th:text="${member.name}">Otto</td>
-                      <td th:text="${member.regdate}">@mdo</td>
-                    </tr>
+                        <tr>
+                            <th scope="row" th:text="${member.m_no}"></th>
+                            <td th:text="${member.id}"></td>
+                            <td th:text="${member.name}"></td>
+                            <td th:text="${member.regdate}"></td>
+                        </tr>
                     </th:block>
                 </th:block>
-              
-            </tbody>
-          </table>
-          <div th:insert="~{/fragments::pageNavi}"></div>
-    </main>
+                
 
-    <footer th:insert="~{/fragments::footer}"></footer>
+                </tbody>
+            </table>
+            <div th:text="${map.pageDto}"></div>
+            <!--페이지네이션-->
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+                <!--앞으로가기 링크-->
+                <th:block th:if="${pageDto.prev}">
+                    <li class="page-item">
+                        <!--특수문자 입력 자음+한자키(컨트롤키)-->
+                        <a class="page-link" th:onclick="go([[${pageDto.startPage-1}]])">◀</a>
+                    </li>
+                </th:block>
+                <th:block th:each="index:${#numbers.sequence(map.pageDto.startPage, map.pageDto.endPage)}">
+                    <!--페이지 숫자 링크
+                    active : 현재페이지를 알려주기위해 추가하는 class 속성 -->
+                    <li class="page-item " th:class="${pageDto.selectDto.pageNo == index?'page-item active':'page-item'}">
+                        <!--반복문을 통해 페이지링크를 생성
+                        자바스크립트에 값을 넘길때에는 를 이용-->
+                        <a class="page-link"
+                            th:text="${index}"
+                            th:onclick="go([[${index}]])"></a>
+                    </li>
+                </th:block>
+                
+                <!--뒤로가기 링크-->
+                <th:block th:if="${pageDto.next}">
+                    <li class="page-item">
+                        <a class="page-link" th:onclick="go([[${pageDto.endPage+1}]])">▶</a>
+                    </li>
+                </th:block>
+                </ul>
+            </nav>
+
+
+            <!--fragment 사용-->
+            <div th:replace="~{/member/fragments::pageNavi}"></div>
+        </main>
+        <footer>
+            <hr>
+            2024.08
+        </footer>
+    </div>
+
+
+    
+    
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

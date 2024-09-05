@@ -70,10 +70,12 @@ public class BookController {
         System.out.println(files);
 
         if (files != null && files.size() > 0) {
-            // 파일을 저장하고 시퀀스값을 반환 받아온다!
-            // path : 서비스별로 첨부파일을 관리하기 위해 폴더를 구분!!!!
-            int f_no = uploadService.insertUpload(files, "book");
-            book.setImg_f_no(f_no);
+            if (!"".equals(files.get(0).getOriginalFilename())) {
+                // 파일을 저장하고 시퀀스값을 반환 받아온다!
+                // path : 서비스별로 첨부파일을 관리하기 위해 폴더를 구분!!!!
+                int f_no = uploadService.insertUpload(files, "book");
+                book.setImg_f_no(f_no);
+            }
         }
 
         int res = service.insertBook(book);
@@ -82,7 +84,6 @@ public class BookController {
         } else {
             return "/msgbox";
         }
-        // return "redirect:/book/list";
     }
 
     @GetMapping("/book/detail")

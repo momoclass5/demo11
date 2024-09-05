@@ -38,16 +38,7 @@
     </style>
 </head>
 <body>
-<a href="/download?fileName=1. JAVA 다운로드.docx">다운로드</a>
-<img src="/download?fileName=bootstrap-logo.svg&img=Y" alt="" width="30px" height="24px">
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-arrow-down" viewBox="0 0 16 16" onclick="location.href='/book/list'">
-  <path d="M8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5"/>
-  <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"/>
-</svg>
-<i class="bi bi-file-arrow-down"></i> 
-<br>
-<span class="new">하이라이트!</span>
-<span class="new2">하이라이트!</span>
+
 
     <!-- fragment 입력 
       th:replace : 태그를 프레그먼트로 교체
@@ -65,17 +56,9 @@
     <h1 th:text="${title}">리스트</h1>
     <!-- <div th:text="${list}"></div> -->
     <form action="/book/list" method="get" name="searchForm">
-      <a href="/book/list">리스트페이지로 이동</a>
-
-      map : <span th:text="${map.pageDto.searchDto.searchField == 'author'}"></span>
-      <!--param 으로 비교 할 경우, 문자열 처리를 하지 않으면 비교 결과가 제대로 나오지 않음-->
-      <br>param : <span th:text="${param.searchField == 'author'}"></span>
       
-      <div th:text="${param.searchField}"></div>
-      <div th:text="'author'"></div>
       <div class="input-group" id="searchBox">
 
-        <!-- 검색필드 :-->
         <!-- 검색필드 :-->
         <select class="form-select" aria-label="Default select example" name="searchField">
           <option value="title" selected>도서명</option>
@@ -94,16 +77,16 @@
         2. 파라메터가 전달 되지 않은경우의 처리가 필요함
         그래서 param.pageNo 보다는 pageDto.searchDto.pageNo를 사용함
         -->
-        pageNo : 
-        <input type="text" name="pageNo" id="pageNo" value="1" 
+        
+        <input type="hidden" name="pageNo" id="pageNo" value="1" 
                         th:value="${map.pageDto.searchDto.pageNo}">
-        <br>amount : 
-        <input type="text" name="amount" id="amount" value="10" 
+        
+        <input type="hidden" name="amount" id="amount" value="10" 
                         th:value="${map.pageDto.searchDto.amount}">
         
-        <br><button>전송</button>
     </form>
-    <button onclick="location.href='/book/write'">등록</button>
+    <button onclick="location.href='/book/write'" class="btn btn-primary">등록</button>
+
     <!--테이블-->
     <table class="table" th:with="list=${map.list}">
         <thead>
@@ -132,7 +115,7 @@
                       <a th:href="@{/book/detail(b_no=${book.b_no})}" th:text="${book.title}"></a>
                       <!-- 링크를 이용해서 /book/detail?b_no=123 
                        컨트롤러 /book/detail -->
-                       <th:block th:unless="${isNew}">
+                       <th:block th:if="${book.isNew}">
                         <i class="bi bi-balloon"></i>
                        </th:block>
                     </td>

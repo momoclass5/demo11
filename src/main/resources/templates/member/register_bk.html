@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        window.addEventListener('click', function(){
+            fetch('/checkId')
+            .then(res=>res.json())
+            .then(data=>{
+                console.log(data);
+            })
+            .catch(e=>{ 
+                console.log('error', e);
+            });
+            
+        })
+    </script>
+</head>
+<body>
+    아이디 : <input type="text" name="id" id=""><button id="btnCheckId">중복체크</button>
+
+    
+</body>
+</html>

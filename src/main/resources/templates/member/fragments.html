@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div th:fragment="pageNavi">
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+            <!--앞으로가기 링크-->
+            <th:block th:if="${pageDto.prev}">
+                <li class="page-item">
+                    <!--특수문자 입력 자음+한자키(컨트롤키)-->
+                    <a class="page-link" th:onclick="go([[${pageDto.startPage-1}]])">◀</a>
+                </li>
+            </th:block>
+            <th:block th:each="index:${#numbers.sequence(map.pageDto.startPage, map.pageDto.endPage)}">
+                <!--페이지 숫자 링크
+                active : 현재페이지를 알려주기위해 추가하는 class 속성 -->
+                <li class="page-item ">
+                    <!--반복문을 통해 페이지링크를 생성
+                    자바스크립트에 값을 넘길때에는 를 이용-->
+                    <a class="page-link"
+                        th:text="${index}"
+                        th:onclick="go([[${index}]])"></a>
+                </li>
+            </th:block>
+            
+            <!--뒤로가기 링크-->
+            <th:block th:if="${pageDto.next}">
+                <li class="page-item">
+                    <a class="page-link" th:onclick="go([[${pageDto.endPage+1}]])">▶</a>
+                </li>
+            </th:block>
+            </ul>
+        </nav>
+
+    </div>
+</body>
+</html>

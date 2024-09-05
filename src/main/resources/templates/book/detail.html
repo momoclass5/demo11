@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .book_img{
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+        }
+        .star-rate{
+            position: relative;
+            margin: 0 auto;
+            width: 100px;
+            height: 50px;
+            overflow: hidden;
+        }
+        .star-full{
+            position: absolute;
+            width: 10%;
+            
+        }
+        .star-bg{
+            position: absolute;
+            
+            
+        }
+    </style>
 </head>
 <body>
         <!--
@@ -16,17 +40,23 @@
     
     <main>
         <h3>도서상세</h3>
-        
+        <hr>
         <th:block th:if="${book != null}">
             <table>
                 <tr>
                     <!--첨부파일 이미지-->
                     <td rowspan="4">
                     <th:block th:unless="${#lists.isEmpty(imgFileList)}">
+                        
                         <!-- <div th:text="${imgFileList[0]}"></div> -->
-                        <img th:src="@{/download(fileName='/'+${imgFileList[0].path}+'/'+${imgFileList[0].sname}, oname=${imgFileList[0].oname})}" 
+                        <img class="book_img" th:src="@{/download(fileName='/'+${imgFileList[0].path}+'/'+${imgFileList[0].sname}, oname=${imgFileList[0].oname})}" 
                             alt="첨부파일" width="200px" height="200px"><br>
+                        <div class="star-rate">
+                            <div class="star-full">★★★★★</div>
+                            <div class="star-bg">☆☆☆☆☆</div>
+                        </div>
                     </th:block>
+                    
                     </td>
                     <td>도서명</td>
                     <td th:text="${book.title}"></td>
@@ -45,7 +75,10 @@
             </tr>
         </table>
         </th:block>
-
+        <hr>
+        <button class="btn btn-primary">수정</button>
+        <button class="btn btn-danger">삭제</button>
+        <button class="btn btn-success">리스트</button>
 
     </main>
 

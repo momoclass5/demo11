@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        function getCookie(name) {
+            let value = `; ${document.cookie}`;
+            let parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        window.onload = function() {
+            let cookieValue = getCookie("userSession");
+            alert(cookieValue);
+            if (cookieValue) {
+                document.getElementById("cookie-info").innerText = "Cookie value: " + cookieValue;
+            } else {
+                document.getElementById("cookie-info").innerText = "Cookie not found.";
+            }
+        };
+    </script>
+</head>
+<body>
+    <div id="cookie-info"></div>
+
+    <h2>로그인</h2>
+    <!--
+        method : 요청방식을 결정
+        action : 서버에 요청할 페이지 주소
+        name : 자바스크립트에서 폼을 선택 할때 사용
+    -->
+    <form action="/member/loginAction" method="post" name="loginForm">
+        <!-- submit버튼 : 폼안의 요소들을 가지고 서버에 새로운 요청-->
+         
+        아이디 : <input type="text" name="id" id="" value="한글"><br>
+        비밀번호 : <input type="password" name="pw" id="" value="pass01"><br>
+         
+
+        <button type="submit">전송</button>
+    </form>
+
+</body>
+</html>

@@ -2,51 +2,64 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo10.mapper.MemberMapper">
 
-<mapper namespace="com.example.demo11.mapper.MemberMapper">
+    <!-- login --> 
 
-    <!-- selectMemberList --> 
-
-    <select id="selectMemberList">
-        select *
-        from    (
-                select rownum rn, t.* 
-                from    (
-                        select  * 
-                        from    tb_member
-                        where   1=1
-                        <!-- 동적쿼리 : 사용자의 요청에 의해서 변경되는 쿼리 -->
-                        <if test="searchWord !=''">
-                            <if test="searchField == 'regdate'">
-                                and to_char(regdate, 'yyyy-mm-dd') = #{searchWord}
-                            </if>
-                            <if test="searchField != 'regdate'">
-                                and upper(${searchField}) like '%'||upper(#{searchWord})||'%'
-                            </if>
-                        </if>
-                        order by m_no desc
-                )t
-        )
-        where rn between #{pageNo} * #{amount} - (#{amount}-1)
-                    and #{pageNo} * #{amount}
+    <!--resultType의 패키지 정보는 application.property파일에 등록되어 있어 생략이 가능-->
+    <!--비밀번호 암호화 이후 로그인 로직 변경-->
+    <select id="login" resultType="MemberDto">
+    select * from tb_member where id=#{id}
     </select>
 
-    <!-- selectTotalCnt --> 
+  <!-- insertMember --> 
 
-    <select id="selectTotalCnt">
-        select  count(*) 
-        from    tb_member
-        where   1=1
-        <!-- 동적쿼리 : 사용자의 요청에 의해서 변경되는 쿼리 -->
-        <if test="searchWord !=''">
-            <if test="searchField == 'regdate'">
-                and to_char(regdate, 'yyyy-mm-dd') = #{searchWord}
-            </if>
-            <if test="searchField != 'regdate'">
-            <!-- like 사용시 %를 문자열 처리후 연결하여 사용 할 수 있다 -->
-            and upper(${searchField}) like '%'||upper(#{searchWord})||'%'
-            </if>
-        </if>
-    </select>
-    
-</mapper>
+  <insert id="insertMember">
+    insert into tb_member (m_no, id, pw, name) 
+                values (seq_tb_member.nextval, #{id}, #{pw}, #{name})
+  </insert>
+
+  <!-- selectCheckId --> 
+
+  <select id="selectCheckId">
+    select count(*) from tb_member where id=#{id}
+  </select>
+
+  <!-- updatePw --> 
+
+  <update id="updatePw">
+  update tb_member set pw=#{pw} where id=#{id}
+  </update>
+
+
+  <!-- selectMemberList --> 
+
+  <select id="selectMemberList" resultType="MemberDto">
+    select * 
+    from (
+        select rownum rn, t.* 
+        from (
+        
+            select  * 
+            from    tb_member
+            order by m_no desc
+            
+            ) t
+    )
+    where rn between #{pageNo} * #{amount} - (#{amount}-1) 
+                 and #{pageNo} * #{amount}
+
+
+  </select>
+
+  <!-- selectTotalCnt --> 
+
+  <select id="selectTotalCnt">
+  select count(*) from tb_member
+  </select>
+
+
+
+
+  
+  </mapper>

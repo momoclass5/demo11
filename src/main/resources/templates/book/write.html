@@ -4,6 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+      // 화면이 모두 로딩된 후 실행
+      window.addEventListener('load', function(){
+        // 버튼을 선택 하고 버튼에 이벤트를 추가
+        btn_write.addEventListener('click', function(){
+          // 유효성 검사
+          if(checkFom()){
+          }
+          writeForm.submit();
+        });
+      });
+
+      // 유효성 검사 (데이터의 무결성 유지를 위해서 테이블에는 많은 제약조건이 걸려 있다)
+      // 화면에서 값을 넘기기 전, 입력 가능한 데이터인지 체크
+      function checkFom(){
+
+        // forEach : 요소목록의 반복문(요소목록으로 부터 요소를 꺼내서 item에 전달)
+        // 메세지박스 초기화
+        document.querySelectorAll(".msgbox").forEach(function(item){
+          item.innerText='';
+        })
+
+        let res = true;
+        console.log('도서등록');
+        //let msg = '';
+        
+        let title = document.querySelector('#title');
+        if(title.value == ''){
+          title.nextSibling.innerText='제목을 입력해주세요';
+          //document.querySelector('#title + .msgbox').innerText='제목을 입력해주세요';
+          //msg += '제목을 입력해주세요\n';
+          res = false;
+        }
+
+        if(author.value == ''){
+          document.querySelector('#author + .msgbox').innerText='작가를 입력 해주세요';
+          res = false;
+        }
+
+        if(price.value == ''){
+          document.querySelector('#price + .msgbox').innerText='가격을 입력 해주세요';
+          res = false;
+        }
+
+        if(isNaN(Number(price.value))){
+          document.querySelector('#price + .msgbox').innerText='가격은 숫자만 입력 가능 합니다.';
+          price.value='';
+          price.focus();
+          res = false;
+        }
+
+        if(file.files.length == 0){
+          document.querySelector('#file + .msgbox').innerText='이미지 파일을 선택 해주세요';
+          res = false;
+        }
+
+        // 등록 가능한 확장자 목록
+        let extensions = ['jpg', 'gif', 'svg', 'png'];
+        const maxSize = 1024*1024;
+
+        for(let f of file.files){
+          
+          // 파일의 확장자를 변수에 저장
+          let f_extension = f.name.split(".").pop();
+
+          // 확장자 목록에 포함된 확장자인지 확인
+          if(!extensions.includes(f_extension)){
+            document.querySelector('#file + .msgbox').innerText+='파일형식을 확인해주세요';
+            res = false;
+          }
+          
+          if(f.size > maxSize){
+            document.querySelector('#file + .msgbox').innerText+=f.name + ' 파일의 크기를 확인해주세요';
+            res = false;
+          }
+          
+          console.log(f.size);
+        }
+        /*
+        if(!res){
+          alert(msg);
+        }
+        */
+
+        // 오류 발생시 포커스 넣어주기
+        // 입력체크
+        // 가격 숫자체크, 숫자가 아니면 삭제
+        // 파일 형식체크, 파일 크기
+        // 1MB
+        
+        return res;
+      }
+
+    </script>
 </head>
 <body>
     <!--
@@ -17,28 +111,44 @@
     <main>
         <h3>도서등록</h3>
         <!-- 파일을 전달 하기 위해 enctype을 지정 -->
-        <form action="/book/writeAction" method="post" enctype="multipart/form-data">
+        <form action="/book/writeAction" method="post" enctype="multipart/form-data"
+            name = "writeForm">
         <table class="table">
             <tbody>
               <tr>
                 <th scope="row">도서명</th>
-                <td><input type="text" name="title" id="title"></td>
+                <td>
+                  <input type="text" name="title" id="title"><span class="msgbox"></span>
+                </td>
               </tr>
               <tr>
                 <th scope="row">작가</th>
-                <td><input type="text" name="author" id="author"></td>
+                <td>
+                  <input type="text" name="author" id="author">
+                  <span class="msgbox"></span>
+                </td>
+                
               </tr>
               <tr>
                 <th scope="row">가격</th>
-                <td colspan="2"><input type="text" name="price" id="price"></td>
+                <td colspan="2"><input type="text" name="price" id="price">
+                  <span class="msgbox"></span>
+                  <br>
+                  * 숫자만 입력 가능 합니다.
+                </td>
               </tr>
               <tr>
                 <th scope="row">이미지</th>
-                <td colspan="2"><input type="file" name="file" id="file" multiple></td>
+                <td colspan="2"><input type="file" name="file" id="file" multiple>
+                  <span class="msgbox"></span>
+                  <br>
+                  * jpg, gif, png 파일만 업로드 가능 합니다.<br>
+                  * 파일의 최대크기는 1MB 입니다.
+                </td>
               </tr>
               <tr>
                 <td colspan="2">
-                <button type="submit" class="btn btn-primary">등록</button>
+                <button type="button" class="btn btn-primary" id="btn_write">등록</button>
                 <button type="reset" class="btn btn-secondary">초기화</button>
                 <button type="button" class="btn btn-success" onclick="location.href='/book/list'">리스트</button>
                 </td>
